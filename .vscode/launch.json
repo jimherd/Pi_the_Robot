@@ -4,39 +4,44 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Pico Debug",
+            "name": "Pico Debug (PicoProbe V1)",
             "cwd": "${workspaceRoot}",
             "executable": "${command:cmake.launchTargetPath}",
             "request": "launch",
             "type": "cortex-debug",
-
-    //openocd
-           "servertype": "openocd",
-           "device": "RP2040",
-
-    // segger
-        //   "servertype": "jlink",
-        //   "serverpath": "C:/Program Files/SEGGER/JLink/JLinkGDBServerCL.exe",
-        //   "interface": "swd",
-        //   "device": "RP2040_M0_0",
-
-        // This may need to be arm-none-eabi-gdb depending on your system
-            "gdbPath" : "arm-none-eabi-gdb",
-
-            "configFiles": [             // openocd
+            "servertype": "openocd",
+            "device": "RP2040",
+            "configFiles": [
                 "interface/picoprobe.cfg",
                 "target/rp2040.cfg"
             ],
             "svdFile": "${env:PICO_SDK_PATH}/src/rp2040/hardware_regs/rp2040.svd",
             "runToEntryPoint": "main",
-        // Work around for stopping at main on restart
             "postRestartCommands": [
                 "break main",
                 "continue"
             ],
-            "searchDir": ["C:/jth/Pico/Tools/openocd/tcl"],    // openocd
-        // "showDevDebugOutput": "raw",   // for debug
-        }
+            "searchDir": ["C:/jth/Pico/Tools/openocd/tcl"],
+        },
+        {
+            "name": "Pico Debug (PicoProbe V2 CMSIS)",
+            "cwd": "${workspaceFolder}",
+            "executable": "${command:cmake.launchTargetPath}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "gdbPath": "arm-none-eabi-gdb",
+            "device": "RP2040",
+            "configFiles": [
+                "interface/cmsis-dap.cfg",
+                "target/rp2040.cfg"
+            ],
+            "svdFile": "${env:PICO_SDK_PATH}/src/rp2040/hardware_regs/rp2040.svd",
+            "runToEntryPoint": "main",
+            "openOCDLaunchCommands": [
+                "adapter speed 5000"
+            ]
+        },
     ]
 }
 
